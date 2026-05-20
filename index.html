@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bajaj Bike Showroom</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ── THEME VARIABLES ───────────────────────────────────────── */
+:root {
+  --bg: #ffffff;
+  --bg-sec: #f5f7fa;
+  --bg-ter: #edf0f4;
+  --text: #0d1117;
+  --text-sec: #4b5563;
+  --text-ter: #9ca3af;
+  --accent: #1a56db;
+  --accent-hov: #1340b0;
+  --accent-soft: #dbeafe;
+  --border: #e2e8f0;
+  --border-sec: #cbd5e1;
+  --card: #ffffff;
+  --nav: rgba(255,255,255,0.96);
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --success: #16a34a;
+  --success-soft: #dcfce7;
+  --warning: #d97706;
+  --warning-soft: #fef3c7;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-hov: 0 20px 48px rgba(0,0,0,0.14);
+  --hero-grad: linear-gradient(135deg,#0d2567 0%,#1a56db 50%,#0366d6 100%);
+  --grid-color: rgba(59,130,246,0.15);
+  --transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"] {
+  --bg: #0a0e1a;
+  --bg-sec: #111827;
+  --bg-ter: #1a2235;
+  --text: #f1f5f9;
+  --text-sec: #94a3b8;
+  --text-ter: #64748b;
+  --accent: #3b82f6;
+  --accent-hov: #60a5fa;
+  --accent-soft: #1e3a5f;
+  --border: #1e293b;
+  --border-sec: #334155;
+  --card: #111827;
+  --nav: rgba(10,14,26,0.96);
+  --danger: #f87171;
+  --danger-soft: #450a0a;
+  --success: #4ade80;
+  --success-soft: #052e16;
+  --warning: #fbbf24;
+  --warning-soft: #451a03;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-hov: 0 20px 48px rgba(0,0,0,0.6);
+  --hero-grad: linear-gradient(135deg,#0a0e1a 0%,#0f1a35 50%,#0a1628 100%);
+  --grid-color: rgba(59,130,246,0.06);
+}
+
+/* ── BASE ──────────────────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:var(--transition);line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+button,select,input,textarea{font-family:'Inter',sans-serif;}
+img{display:block;}
+h1,h2,h3,h4{font-family:'Rajdhani',sans-serif;letter-spacing:-0.5px;}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg-sec);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:99px;}
+
+/* ── NAVBAR ────────────────────────────────────────────────── */
+#navbar {
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:var(--nav);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:var(--transition);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;height:64px;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo-icon{
+  background:var(--accent);border-radius:8px;
+  width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#fff;font-family:'Rajdhani',sans-serif;
+}
+.nav-logo-text .brand{font-size:17px;font-weight:800;color:var(--text);letter-spacing:1px;line-height:1;font-family:'Rajdhani',sans-serif;}
+.nav-logo-text .sub{font-size:9px;color:var(--text-sec);letter-spacing:3px;font-weight:600;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-link{
+  background:none;border:none;padding:8px 16px;border-radius:6px;
+  cursor:pointer;font-weight:500;font-size:14px;color:var(--text-sec);
+  transition:var(--transition);
+}
+.nav-link:hover{background:var(--bg-sec);color:var(--text);}
+.nav-link.active{background:var(--accent-soft);color:var(--accent);font-weight:700;}
+.theme-btn{
+  background:var(--bg-ter);border:none;border-radius:8px;
+  padding:8px 10px;cursor:pointer;color:var(--text);
+  display:flex;align-items:center;transition:var(--transition);margin-left:8px;
+}
+.theme-btn:hover{background:var(--border-sec);}
+.hamburger{display:none;background:none;border:none;color:var(--text);cursor:pointer;padding:4px;}
+
+/* ── PAGES ─────────────────────────────────────────────────── */
+.page{display:none;padding-top:64px;min-height:100vh;animation:fadeIn .3s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+/* ── HERO ──────────────────────────────────────────────────── */
+.hero{
+  background:var(--hero-grad);
+  min-height:calc(100vh - 64px);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+.hero-orb1{
+  position:absolute;width:600px;height:600px;border-radius:50%;
+  background:rgba(59,130,246,0.12);top:-200px;right:-200px;filter:blur(80px);
+}
+.hero-orb2{
+  position:absolute;width:400px;height:400px;border-radius:50%;
+  background:rgba(99,179,237,0.08);bottom:-100px;left:-100px;filter:blur(60px);
+}
+.hero-content{
+  max-width:1100px;margin:0 auto;padding:80px 20px;
+  text-align:center;position:relative;z-index:1;
+}
+.hero-badge{
+  display:inline-block;background:rgba(255,255,255,0.14);
+  backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);
+  border-radius:999px;padding:6px 20px;margin-bottom:24px;
+}
+.hero-badge span{color:rgba(255,255,255,0.9);font-size:12px;font-weight:700;letter-spacing:1.5px;}
+.hero-title{
+  color:#fff;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;
+  margin:0 0 20px;line-height:1.05;letter-spacing:-1px;
+}
+.hero-title .gradient{
+  background:linear-gradient(90deg,#93c5fd,#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{color:rgba(255,255,255,0.75);font-size:18px;max-width:560px;margin:0 auto 40px;line-height:1.7;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{
+  background:#fff;color:var(--accent);border:none;
+  padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;
+  cursor:pointer;transition:var(--transition);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+.btn-outline{
+  background:rgba(255,255,255,0.14);color:#fff;
+  border:1px solid rgba(255,255,255,0.4);
+  padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;
+  cursor:pointer;backdrop-filter:blur(8px);transition:var(--transition);
+}
+.btn-outline:hover{background:rgba(255,255,255,0.22);}
+.hero-stats{
+  display:flex;gap:40px;justify-content:center;margin-top:64px;flex-wrap:wrap;
+}
+.stat-num{color:#fff;font-size:28px;font-weight:900;font-family:'Rajdhani',sans-serif;}
+.stat-lbl{color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;letter-spacing:1.5px;}
+
+/* ── SECTIONS ──────────────────────────────────────────────── */
+.section{padding:80px 20px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-head{text-align:center;margin-bottom:48px;}
+.section-head h2{font-size:32px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.section-head p{color:var(--text-sec);font-size:15px;}
+.section-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;flex-wrap:wrap;gap:16px;}
+
+/* ── FEATURES ──────────────────────────────────────────────── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
+.feature-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px;transition:var(--transition);
+}
+.feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hov);}
+.feature-icon{font-size:36px;margin-bottom:16px;}
+.feature-card h3{color:var(--text);font-weight:700;margin-bottom:8px;font-size:17px;}
+.feature-card p{color:var(--text-sec);font-size:14px;line-height:1.7;}
+
+/* ── BIKE CARDS ────────────────────────────────────────────── */
+.bikes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+.bike-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;transition:var(--transition);cursor:pointer;
+}
+.bike-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hov);}
+.bike-img-wrap{
+  position:relative;background:var(--bg-sec);height:200px;overflow:hidden;
+  transition:background 0.3s;
+}
+.bike-card:hover .bike-img-wrap{background:var(--bg-ter);}
+.bike-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.bike-card:hover .bike-img-wrap img{transform:scale(1.06);}
+.bike-cat-badge{position:absolute;top:12px;right:12px;}
+.bike-color-dots{position:absolute;bottom:12px;left:12px;display:flex;gap:6px;}
+.color-dot{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.8);
+  transition:transform .2s;
+}
+.color-dot.unavail{border-color:rgba(255,80,80,0.6);opacity:.5;}
+.bike-info{padding:20px;}
+.bike-name{color:var(--text);font-weight:800;font-size:19px;margin-bottom:4px;font-family:'Rajdhani',sans-serif;}
+.bike-desc{color:var(--text-sec);font-size:13px;margin-bottom:14px;line-height:1.5;}
+.bike-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.bike-price-lbl{color:var(--text-ter);font-size:10px;font-weight:700;letter-spacing:1px;}
+.bike-price{color:var(--accent);font-size:22px;font-weight:900;font-family:'Rajdhani',sans-serif;}
+.bike-specs-mini{display:flex;gap:12px;}
+.spec-mini{color:var(--text-sec);font-size:12px;}
+.btn-view{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  padding:12px;border-radius:8px;font-weight:700;cursor:pointer;
+  font-size:14px;transition:var(--transition);
+}
+.btn-view:hover{background:var(--accent-hov);}
+
+/* ── BADGE ─────────────────────────────────────────────────── */
+.badge{
+  display:inline-block;padding:3px 11px;border-radius:999px;
+  font-size:11px;font-weight:700;
+}
+.badge-blue{background:var(--accent-soft);color:var(--accent);}
+.badge-green{background:var(--success-soft);color:var(--success);}
+.badge-yellow{background:var(--warning-soft);color:var(--warning);}
+.badge-red{background:var(--danger-soft);color:var(--danger);}
+
+/* ── FILTER BAR ────────────────────────────────────────────── */
+.filter-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center;}
+.filter-input{
+  flex:1 1 200px;background:var(--bg-sec);border:1px solid var(--border);
+  color:var(--text);border-radius:8px;padding:10px 16px;font-size:14px;outline:none;
+}
+.filter-input:focus{border-color:var(--accent);}
+.filter-select{
+  background:var(--bg-sec);border:1px solid var(--border);
+  color:var(--text);border-radius:8px;padding:10px 14px;font-size:14px;cursor:pointer;
+}
+.cat-tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
+.cat-tab{
+  background:var(--bg-sec);color:var(--text-sec);
+  border:1px solid var(--border);padding:8px 18px;border-radius:999px;
+  font-size:13px;font-weight:600;cursor:pointer;transition:var(--transition);
+}
+.cat-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.cat-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);}
+
+/* ── DETAIL PAGE ───────────────────────────────────────────── */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.bike-detail-img{
+  border-radius:20px;overflow:hidden;aspect-ratio:16/10;position:relative;
+  background:linear-gradient(135deg,var(--bg-sec),var(--bg-ter));
+}
+.bike-detail-img img{width:100%;height:100%;object-fit:cover;transition:opacity .4s;}
+.out-of-stock-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.52);
+  display:flex;align-items:center;justify-content:center;
+}
+.out-of-stock-label{
+  background:var(--danger);color:#fff;padding:12px 24px;
+  border-radius:8px;font-weight:700;font-size:15px;
+}
+.color-picker{margin-top:16px;}
+.color-picker-label{color:var(--text-sec);font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px;}
+.color-swatches{display:flex;gap:12px;flex-wrap:wrap;}
+.swatch-btn{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:none;border:none;cursor:pointer;padding:0;
+}
+.swatch-circle{
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid transparent;transition:var(--transition);position:relative;
+}
+.swatch-btn.active .swatch-circle{border-color:var(--accent);}
+.swatch-btn:not(.active) .swatch-circle{border-color:var(--border);}
+.swatch-btn.unavail .swatch-circle{opacity:.4;}
+.swatch-name{color:var(--text-sec);font-size:10px;font-weight:600;max-width:60px;text-align:center;line-height:1.2;}
+.unavail-msg{
+  margin-top:12px;padding:10px 16px;background:var(--danger-soft);
+  border-radius:8px;color:var(--danger);font-size:13px;font-weight:600;
+}
+.price-box{
+  background:var(--bg-sec);border-radius:12px;padding:16px 20px;margin-bottom:24px;
+}
+.price-box-lbl{color:var(--text-sec);font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+.price-big{color:var(--accent);font-size:38px;font-weight:900;font-family:'Rajdhani',sans-serif;}
+.price-note{color:var(--text-ter);font-size:12px;}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.spec-card{background:var(--bg-sec);border-radius:10px;padding:12px 14px;}
+.spec-key{color:var(--text-ter);font-size:11px;font-weight:600;}
+.spec-val{color:var(--text);font-size:13px;font-weight:600;margin-top:2px;}
+.detail-btns{display:flex;gap:12px;}
+.btn-book{
+  flex:1;background:var(--accent);color:#fff;border:none;
+  padding:14px;border-radius:10px;font-weight:700;font-size:16px;
+  cursor:pointer;transition:var(--transition);
+}
+.btn-book:hover:not(:disabled){background:var(--accent-hov);}
+.btn-book:disabled{background:var(--bg-ter);color:var(--text-ter);cursor:not-allowed;}
+.btn-emi{
+  background:var(--bg-sec);color:var(--text);border:1px solid var(--border);
+  padding:14px 18px;border-radius:10px;font-weight:600;cursor:pointer;
+  font-size:14px;transition:var(--transition);white-space:nowrap;
+}
+.btn-emi:hover{border-color:var(--accent);color:var(--accent);}
+.btn-back{
+  background:none;border:none;color:var(--accent);cursor:pointer;
+  font-size:14px;font-weight:700;padding:0;margin-bottom:24px;display:inline-flex;align-items:center;gap:6px;
+}
+
+/* ── EMI CALCULATOR ────────────────────────────────────────── */
+.emi-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;}
+.emi-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;}
+.slider-row{margin-bottom:24px;}
+.slider-label-row{display:flex;justify-content:space-between;margin-bottom:8px;}
+.slider-label{color:var(--text-sec);font-size:13px;font-weight:600;}
+.slider-val{color:var(--accent);font-size:14px;font-weight:700;}
+input[type=range]{
+  width:100%;accent-color:var(--accent);height:4px;
+  -webkit-appearance:none;appearance:none;border-radius:99px;
+  background:var(--border);outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);cursor:pointer;
+}
+.slider-minmax{display:flex;justify-content:space-between;margin-top:4px;}
+.slider-minmax span{color:var(--text-ter);font-size:11px;}
+.emi-result-hero{
+  background:linear-gradient(135deg,#1a56db,#0366d6);
+  border-radius:20px;padding:28px;text-align:center;margin-bottom:20px;
+}
+[data-theme="dark"] .emi-result-hero{background:linear-gradient(135deg,#0f1a35,#1e3a5f);}
+.emi-result-lbl{color:rgba(255,255,255,.7);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.emi-result-num{color:#fff;font-size:48px;font-weight:900;font-family:'Rajdhani',sans-serif;line-height:1;}
+.emi-result-tenure{color:rgba(255,255,255,.7);font-size:13px;margin-top:8px;}
+.breakdown-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border);
+}
+.breakdown-row:last-child{border-bottom:none;}
+.breakdown-label{color:var(--text-sec);font-size:14px;}
+.breakdown-val{font-weight:700;font-size:15px;}
+.bar-row{margin-bottom:14px;}
+.bar-label-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.bar-label{color:var(--text-sec);font-size:13px;}
+.bar-pct{color:var(--text-sec);font-size:13px;}
+.bar-track{background:var(--bg-sec);border-radius:99px;height:8px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+/* ── MODAL ─────────────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:2000;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  animation:fadeIn .2s ease;
+}
+.modal-box{
+  background:var(--card);border-radius:20px;padding:32px;
+  width:100%;max-width:440px;position:relative;
+  max-height:90vh;overflow-y:auto;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:none;opacity:1;}}
+.modal-close{
+  position:absolute;top:16px;right:16px;background:none;border:none;
+  color:var(--text-sec);cursor:pointer;font-size:22px;line-height:1;
+}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;color:var(--text-sec);font-size:13px;font-weight:600;margin-bottom:6px;}
+.form-input{
+  width:100%;background:var(--bg-sec);border:1px solid var(--border);
+  color:var(--text);border-radius:8px;padding:12px 14px;font-size:14px;outline:none;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:var(--accent);}
+.booking-summary{
+  background:var(--bg-sec);border-radius:10px;padding:14px;margin-bottom:20px;
+  font-size:13px;color:var(--text-sec);line-height:1.7;
+}
+.booking-summary strong{color:var(--text);}
+.btn-confirm{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  padding:14px;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;
+  transition:var(--transition);
+}
+.btn-confirm:hover{background:var(--accent-hov);}
+.success-box{text-align:center;padding:20px 0;}
+.success-icon{font-size:64px;margin-bottom:16px;}
+.success-box h2{color:var(--text);font-weight:800;margin-bottom:8px;}
+.success-box p{color:var(--text-sec);}
+.btn-done{
+  background:var(--accent);color:#fff;border:none;padding:12px 32px;
+  border-radius:8px;font-weight:700;cursor:pointer;margin-top:16px;font-size:15px;
+  transition:var(--transition);
+}
+
+/* ── ADMIN ─────────────────────────────────────────────────── */
+.login-wrap{
+  display:flex;align-items:center;justify-content:center;
+  min-height:calc(100vh - 64px);padding:40px 20px;
+}
+.login-box{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:40px;width:100%;max-width:400px;
+}
+.login-icon{
+  width:56px;height:56px;background:var(--accent);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  margin:0 auto 12px;
+}
+.login-box h2{text-align:center;color:var(--text);font-weight:800;margin-bottom:4px;}
+.login-box p{text-align:center;color:var(--text-sec);font-size:14px;margin-bottom:24px;}
+.login-hint{text-align:center;color:var(--text-ter);font-size:12px;margin-top:16px;}
+.admin-wrap{max-width:1200px;margin:0 auto;padding:40px 20px;}
+.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px;}
+.admin-header h1{color:var(--text);font-size:32px;font-weight:900;margin:0;}
+.admin-header p{color:var(--text-sec);font-size:14px;margin:4px 0 0;}
+.admin-actions{display:flex;gap:8px;align-items:center;}
+.online-dot{background:var(--success-soft);color:var(--success);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;}
+.btn-logout{
+  background:var(--danger-soft);color:var(--danger);border:none;
+  border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;font-size:13px;
+}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+.stat-card .icon{font-size:28px;margin-bottom:8px;}
+.stat-card .num{color:var(--text);font-size:28px;font-weight:900;font-family:'Rajdhani',sans-serif;}
+.stat-card .lbl{color:var(--text-sec);font-size:13px;}
+.admin-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.admin-tab{
+  background:var(--bg-sec);color:var(--text-sec);
+  border:1px solid var(--border);padding:10px 20px;border-radius:8px;
+  font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);
+}
+.admin-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.admin-tab-panel{display:none;}
+.admin-tab-panel.active{display:block;animation:fadeIn .25s ease;}
+.data-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.data-table-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.data-table-head h3{color:var(--text);font-weight:700;margin:0;}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg-sec);}
+thead th{padding:12px 16px;text-align:left;color:var(--text-sec);font-size:12px;font-weight:700;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:hover{background:var(--bg-sec);}
+tbody td{padding:14px 16px;color:var(--text);font-size:14px;}
+.status-select{
+  background:var(--bg-sec);border:1px solid var(--border);color:var(--text);
+  border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer;
+}
+.admin-bikes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;}
+.admin-bike-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.admin-bike-card img{width:100%;height:150px;object-fit:cover;}
+.admin-bike-info{padding:16px;}
+.admin-bike-name{color:var(--text);font-weight:700;font-size:15px;margin-bottom:4px;}
+.admin-bike-price{color:var(--accent);font-weight:700;margin-bottom:12px;}
+.admin-bike-actions{display:flex;gap:8px;}
+.btn-edit{
+  flex:1;background:var(--accent-soft);color:var(--accent);border:none;
+  border-radius:6px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;
+}
+.btn-delete{
+  background:var(--danger-soft);color:var(--danger);border:none;
+  border-radius:6px;padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer;
+}
+.btn-add-bike{
+  background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:10px 20px;font-weight:700;cursor:pointer;font-size:14px;margin-bottom:16px;
+}
+.inventory-bike{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.inventory-bike h4{color:var(--text);font-weight:700;margin-bottom:12px;}
+.inventory-colors{display:flex;gap:12px;flex-wrap:wrap;}
+.inv-color{
+  background:var(--bg-sec);border-radius:10px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.inv-swatch{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);}
+.inv-name{color:var(--text);font-size:13px;font-weight:600;}
+.btn-toggle-stock{
+  border:none;border-radius:6px;padding:4px 10px;
+  font-size:11px;font-weight:700;cursor:pointer;
+}
+.btn-toggle-stock.in{background:var(--success-soft);color:var(--success);}
+.btn-toggle-stock.out{background:var(--danger-soft);color:var(--danger);}
+
+/* ── FOOTER ────────────────────────────────────────────────── */
+footer{background:var(--bg-sec);border-top:1px solid var(--border);padding:48px 20px 24px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-bottom:32px;}
+.footer-brand{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.footer-brand-icon{background:var(--accent);border-radius:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:17px;font-family:'Rajdhani',sans-serif;}
+.footer-brand-name{color:var(--text);font-weight:800;font-size:15px;font-family:'Rajdhani',sans-serif;}
+.footer-desc{color:var(--text-sec);font-size:13px;line-height:1.7;}
+.footer-col h4{color:var(--text);font-weight:700;margin-bottom:12px;font-size:14px;}
+.footer-link{color:var(--text-sec);font-size:13px;display:block;margin-bottom:6px;cursor:pointer;background:none;border:none;text-align:left;transition:color .2s;}
+.footer-link:hover{color:var(--accent);}
+.footer-contact div{color:var(--text-sec);font-size:13px;margin-bottom:6px;}
+.footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-bottom p{color:var(--text-ter);font-size:12px;margin:0;}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-links.open{
+    display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;
+    background:var(--nav);border-bottom:1px solid var(--border);
+    padding:12px;gap:4px;z-index:999;
+  }
+  .hamburger{display:block;}
+  .detail-grid{grid-template-columns:1fr;}
+  .emi-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:2.2rem;}
+  .hero-stats{gap:24px;}
+}
+@media(max-width:480px){
+  .bikes-grid{grid-template-columns:1fr;}
+  .specs-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <div class="nav-logo-icon">B</div>
+      <div class="nav-logo-text">
+        <div class="brand">BAJAJ</div>
+        <div class="sub">BIKE SHOWROOM</div>
+      </div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link active" onclick="showPage('home');closeMenu()">Home</button>
+      <button class="nav-link" onclick="showPage('bikes');closeMenu()">Bikes</button>
+      <button class="nav-link" onclick="showPage('emi');closeMenu()">EMI Calculator</button>
+      <button class="nav-link" onclick="showPage('admin');closeMenu()">Admin</button>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="theme-btn" id="themeBtnMob" onclick="toggleTheme()" aria-label="Toggle theme" style="display:none;">🌙</button>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HOME PAGE ──────────────────────────────────────────── -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span>🏆 INDIA'S MOST TRUSTED MOTORCYCLE BRAND</span></div>
+      <h1 class="hero-title">Drive the <span class="gradient">Spirit</span><br/>of Bajaj</h1>
+      <p class="hero-sub">Experience India's most iconic motorcycles. From commuters to performance beasts — find your perfect ride.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('bikes')">Explore Bikes →</button>
+        <button class="btn-outline" onclick="showPage('emi')">💰 EMI Calculator</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">50+</div><div class="stat-lbl">YEARS LEGACY</div></div>
+        <div><div class="stat-num">20M+</div><div class="stat-lbl">HAPPY RIDERS</div></div>
+        <div><div class="stat-num">6</div><div class="stat-lbl">BIKE MODELS</div></div>
+        <div><div class="stat-num">100+</div><div class="stat-lbl">SERVICE CENTERS</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="section" style="background:var(--bg-sec);">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2>Why Choose Bajaj?</h2>
+        <p>Engineering excellence. Indian at heart.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">⚡</div><h3>Powerful Engines</h3><p>From 110cc to 400cc, every engine is precision-crafted for performance and efficiency.</p></div>
+        <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Proven Reliability</h3><p>50+ years of trust. Built for Indian roads, tested across millions of kilometres.</p></div>
+        <div class="feature-card"><div class="feature-icon">💰</div><h3>Best Value</h3><p>Premium features at accessible prices. Excellence shouldn't break the bank.</p></div>
+        <div class="feature-card"><div class="feature-icon">🔧</div><h3>Pan-India Service</h3><p>100+ authorized service centers. Help is always around the corner.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Bikes -->
+  <div class="section">
+    <div class="section-inner">
+      <div class="section-flex">
+        <div>
+          <h2 style="font-size:32px;font-weight:800;color:var(--text);margin-bottom:4px;">Featured Bikes</h2>
+          <p style="color:var(--text-sec);">Handpicked for every rider's dream</p>
+        </div>
+        <button onclick="showPage('bikes')" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;">View All →</button>
+      </div>
+      <div class="bikes-grid" id="featuredBikes"></div>
+    </div>
+  </div>
+
+  <!-- Footer rendered here too -->
+</div>
+
+<!-- ── BIKES PAGE ──────────────────────────────────────────── -->
+<div id="page-bikes" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <h1 style="font-size:36px;font-weight:900;color:var(--text);margin-bottom:8px;letter-spacing:-1px;">Our Bike Collection</h1>
+      <p style="color:var(--text-sec);margin-bottom:32px;">Find your perfect ride from our complete lineup</p>
+      <div class="filter-bar">
+        <input class="filter-input" type="text" id="searchInput" placeholder="🔍 Search bikes..." oninput="renderBikes()"/>
+        <select class="filter-select" id="sortSelect" onchange="renderBikes()">
+          <option value="default">Default Sort</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+        </select>
+      </div>
+      <div class="cat-tabs" id="catTabs"></div>
+      <div class="bikes-grid" id="allBikes"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DETAIL PAGE ─────────────────────────────────────────── -->
+<div id="page-detail" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <button class="btn-back" onclick="showPage('bikes')">← Back to Bikes</button>
+      <div class="detail-grid" id="bikeDetail"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EMI PAGE ────────────────────────────────────────────── -->
+<div id="page-emi" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <h1 style="font-size:36px;font-weight:900;color:var(--text);margin-bottom:8px;letter-spacing:-1px;">EMI Calculator</h1>
+      <p style="color:var(--text-sec);margin-bottom:40px;">Plan your Bajaj bike purchase with ease</p>
+      <div class="emi-grid">
+        <!-- Inputs -->
+        <div class="emi-card">
+          <h3 style="color:var(--text);font-weight:700;margin-bottom:24px;">Loan Details</h3>
+          <div class="slider-row">
+            <div class="slider-label-row">
+              <span class="slider-label">Bike Price</span>
+              <span class="slider-val" id="emiPriceLbl">₹1,48,000</span>
+            </div>
+            <input type="range" id="emiPrice" min="50000" max="400000" step="5000" value="148000" oninput="updateEMI()"/>
+            <div class="slider-minmax"><span>₹50,000</span><span>₹4,00,000</span></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-label-row">
+              <span class="slider-label">Down Payment</span>
+              <span class="slider-val" id="emiDownLbl">₹30,000</span>
+            </div>
+            <input type="range" id="emiDown" min="0" max="200000" step="5000" value="30000" oninput="updateEMI()"/>
+            <div class="slider-minmax"><span>₹0</span><span>₹2,00,000</span></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-label-row">
+              <span class="slider-label">Interest Rate</span>
+              <span class="slider-val" id="emiRateLbl">9.5% p.a.</span>
+            </div>
+            <input type="range" id="emiRate" min="6" max="24" step="0.5" value="9.5" oninput="updateEMI()"/>
+            <div class="slider-minmax"><span>6%</span><span>24%</span></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-label-row">
+              <span class="slider-label">Loan Tenure</span>
+              <span class="slider-val" id="emiTenureLbl">24 months</span>
+            </div>
+            <input type="range" id="emiTenure" min="6" max="60" step="6" value="24" oninput="updateEMI()"/>
+            <div class="slider-minmax"><span>6 mo</span><span>60 mo</span></div>
+          </div>
+          <div style="background:var(--bg-sec);border-radius:12px;padding:16px;">
+            <div style="color:var(--text-sec);font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:4px;">LOAN AMOUNT</div>
+            <div style="color:var(--text);font-size:24px;font-weight:900;font-family:'Rajdhani',sans-serif;" id="loanAmt">₹1,18,000</div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="emi-result-hero">
+            <div class="emi-result-lbl">MONTHLY EMI</div>
+            <div class="emi-result-num" id="emiResult">₹5,423</div>
+            <div class="emi-result-tenure" id="emiTenureText">for 24 months</div>
+          </div>
+          <div class="emi-card" style="margin-bottom:20px;">
+            <h3 style="color:var(--text);font-weight:700;margin-bottom:16px;">Payment Breakdown</h3>
+            <div class="breakdown-row"><span class="breakdown-label">Down Payment</span><span class="breakdown-val" id="bdDown" style="color:var(--success);">₹30,000</span></div>
+            <div class="breakdown-row"><span class="breakdown-label">Loan Amount</span><span class="breakdown-val" id="bdLoan" style="color:var(--accent);">₹1,18,000</span></div>
+            <div class="breakdown-row"><span class="breakdown-label">Total Interest</span><span class="breakdown-val" id="bdInterest" style="color:var(--warning);">₹12,152</span></div>
+            <div class="breakdown-row"><span class="breakdown-label">Total Payable</span><span class="breakdown-val" id="bdTotal" style="color:var(--text);">₹1,60,152</span></div>
+          </div>
+          <div class="emi-card">
+            <h3 style="color:var(--text);font-weight:700;margin-bottom:16px;">Loan Split</h3>
+            <div class="bar-row">
+              <div class="bar-label-row"><span class="bar-label">Principal</span><span class="bar-pct" id="pPct">74%</span></div>
+              <div class="bar-track"><div class="bar-fill" id="pBar" style="background:var(--accent);width:74%;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label-row"><span class="bar-label">Interest</span><span class="bar-pct" id="iPct">8%</span></div>
+              <div class="bar-track"><div class="bar-fill" id="iBar" style="background:var(--warning);width:8%;"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label-row"><span class="bar-label">Down Payment</span><span class="bar-pct" id="dPct">19%</span></div>
+              <div class="bar-track"><div class="bar-fill" id="dBar" style="background:var(--success);width:19%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN PAGE ──────────────────────────────────────────── -->
+<div id="page-admin" class="page">
+  <!-- Login -->
+  <div id="adminLogin" class="login-wrap">
+    <div class="login-box">
+      <div class="login-icon">🔒</div>
+      <h2>Admin Login</h2>
+      <p>Bajaj Showroom Management System</p>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input class="form-input" type="text" id="adminUser" placeholder="Enter username"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="adminPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')adminLogin()"/>
+      </div>
+      <button class="btn-confirm" onclick="adminLogin()">Login to Admin →</button>
+      <p class="login-hint">Demo credentials: <strong>admin</strong> / <strong>admin123</strong></p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="adminDash" style="display:none;">
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <div>
+          <h1>Admin Panel</h1>
+          <p>Bajaj Bike Showroom Management</p>
+        </div>
+        <div class="admin-actions">
+          <span class="online-dot">● Online</span>
+          <button class="btn-logout" onclick="adminLogout()">Logout</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="adminStats"></div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('bookings')">📋 Bookings</button>
+        <button class="admin-tab" onclick="switchAdminTab('bikes')">🏍️ Bikes</button>
+        <button class="admin-tab" onclick="switchAdminTab('inventory')">📦 Inventory</button>
+      </div>
+
+      <!-- Bookings Tab -->
+      <div class="admin-tab-panel active" id="tab-bookings">
+        <div class="data-table-wrap">
+          <div class="data-table-head"><h3>All Bookings</h3></div>
+          <div class="table-scroll">
+            <table id="bookingsTable">
+              <thead><tr>
+                <th>#</th><th>Customer</th><th>Phone</th><th>Bike</th><th>Color</th><th>Date</th><th>Status</th><th>Action</th>
+              </tr></thead>
+              <tbody id="bookingsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bikes Tab -->
+      <div class="admin-tab-panel" id="tab-bikes">
+        <button class="btn-add-bike" onclick="openAddBikeModal()">+ Add New Bike</button>
+        <div class="admin-bikes-grid" id="adminBikesGrid"></div>
+      </div>
+
+      <!-- Inventory Tab -->
+      <div class="admin-tab-panel" id="tab-inventory">
+        <div class="data-table-wrap" style="padding:20px;">
+          <div style="padding:0 0 16px;border-bottom:1px solid var(--border);margin-bottom:16px;">
+            <h3 style="color:var(--text);font-weight:700;">Color Inventory Management</h3>
+          </div>
+          <div id="inventoryContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer id="siteFooter">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-icon">B</div>
+          <span class="footer-brand-name">BAJAJ SHOWROOM</span>
+        </div>
+        <p class="footer-desc">Your authorized Bajaj dealership. Experience world-class motorcycles with premium service and genuine support.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <button class="footer-link" onclick="showPage('home')">Home</button>
+        <button class="footer-link" onclick="showPage('bikes')">All Bikes</button>
+        <button class="footer-link" onclick="showPage('emi')">EMI Calculator</button>
+        <button class="footer-link" onclick="showPage('admin')">Admin Panel</button>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contact Us</h4>
+        <div>📍 Bhopal, Madhya Pradesh</div>
+        <div>📞 1800-102-2582</div>
+        <div>✉️ info@bajajshowroom.in</div>
+        <div>🕐 Mon–Sat: 9AM – 7PM</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Bajaj Bike Showroom. All rights reserved.</p>
+      <p>Authorized Bajaj Auto Dealer · Indore, MP</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── BOOKING MODAL ───────────────────────────────────────── -->
+<div id="bookingModal" style="display:none;" class="modal-overlay" onclick="if(event.target===this)closeBookingModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeBookingModal()">✕</button>
+    <div id="bookingForm">
+      <h2 style="color:var(--text);font-weight:800;margin-bottom:4px;" id="bookModalTitle">Book Bike</h2>
+      <p style="color:var(--text-sec);font-size:13px;margin-bottom:20px;" id="bookModalSub">Color: —</p>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" type="text" id="bookName" placeholder="Enter your full name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" type="tel" id="bookPhone" placeholder="Enter 10-digit phone number"/>
+      </div>
+      <div class="booking-summary" id="bookSummary"></div>
+      <button class="btn-confirm" onclick="submitBooking()">Confirm Booking</button>
+    </div>
+    <div id="bookingSuccess" style="display:none;" class="success-box">
+      <div class="success-icon">✅</div>
+      <h2>Booking Confirmed!</h2>
+      <p id="successMsg">We'll contact you shortly.</p>
+      <button class="btn-done" onclick="closeBookingModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT BIKE MODAL ─────────────────────────────────────── -->
+<div id="editBikeModal" style="display:none;" class="modal-overlay" onclick="if(event.target===this)closeEditModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEditModal()">✕</button>
+    <h2 style="color:var(--text);font-weight:800;margin-bottom:20px;" id="editModalTitle">Edit Bike</h2>
+    <div class="form-group">
+      <label class="form-label">Bike Name</label>
+      <input class="form-input" type="text" id="editName"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Price (₹)</label>
+      <input class="form-input" type="number" id="editPrice"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="editCategory">
+        <option>Sport</option><option>Touring</option><option>Cruiser</option><option>Commuter</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-input" id="editDesc" rows="3" style="resize:vertical;"></textarea>
+    </div>
+    <button class="btn-confirm" onclick="saveEdit()">Save Changes</button>
+  </div>
+</div>
+
+<!-- ── ADD BIKE MODAL ──────────────────────────────────────── -->
+<div id="addBikeModal" style="display:none;" class="modal-overlay" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAddModal()">✕</button>
+    <h2 style="color:var(--text);font-weight:800;margin-bottom:20px;">Add New Bike</h2>
+    <div class="form-group">
+      <label class="form-label">Bike Name</label>
+      <input class="form-input" type="text" id="addName" placeholder="e.g. Pulsar RS200"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Price (₹)</label>
+      <input class="form-input" type="number" id="addPrice" placeholder="e.g. 180000"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="addCategory">
+        <option>Sport</option><option>Touring</option><option>Cruiser</option><option>Commuter</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-input" id="addDesc" rows="3" style="resize:vertical;" placeholder="Bike description..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Engine</label>
+      <input class="form-input" type="text" id="addEngine" placeholder="e.g. 199cc, Liquid Cooled"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Power</label>
+      <input class="form-input" type="text" id="addPower" placeholder="e.g. 25 PS @ 9500 rpm"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mileage</label>
+      <input class="form-input" type="text" id="addMileage" placeholder="e.g. 35 kmpl"/>
+    </div>
+    <button class="btn-confirm" onclick="addNewBike()">Add Bike</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const BIKES = [
+  {
+    id:1, name:"Pulsar NS200", category:"Sport", price:148000,
+    description:"The naked street fighter with liquid-cooled engine and aggressive styling. Dominate every road.",
+    engine:"199.5cc, Liquid Cooled", power:"24.5 PS @ 9750 rpm", torque:"18.74 Nm @ 8000 rpm",
+    mileage:"35 kmpl", fuelType:"Petrol", weight:"156 kg", topSpeed:"136 km/h",
+    colors:[
+      {name:"Sparkle Black",hex:"#1a1a2e",image:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80",available:true},
+      {name:"Caribbean Blue",hex:"#0066cc",image:"https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&q=80",available:true},
+      {name:"Burnt Red",hex:"#cc2200",image:"https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80",available:false},
+    ]
+  },
+  {
+    id:2, name:"Dominar 400", category:"Touring", price:232000,
+    description:"Quarter-litre tourer engineered for long hauls. Power meets endurance on every highway.",
+    engine:"373.3cc, Liquid Cooled", power:"40 PS @ 8800 rpm", torque:"35 Nm @ 6500 rpm",
+    mileage:"26 kmpl", fuelType:"Petrol", weight:"182 kg", topSpeed:"148 km/h",
+    colors:[
+      {name:"Vine Black",hex:"#1c1c1c",image:"https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&q=80",available:true},
+      {name:"Aurora Green",hex:"#1a5c3a",image:"https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&q=80",available:true},
+    ]
+  },
+  {
+    id:3, name:"Avenger 220 Cruise", category:"Cruiser", price:132000,
+    description:"Born to cruise. Low-slung stance and relaxed riding position for the spirit of open roads.",
+    engine:"220cc, Oil Cooled", power:"19.03 PS @ 8400 rpm", torque:"17.55 Nm @ 7000 rpm",
+    mileage:"38 kmpl", fuelType:"Petrol", weight:"152 kg", topSpeed:"114 km/h",
+    colors:[
+      {name:"Ebony Black",hex:"#1a1a1a",image:"https://images.unsplash.com/photo-1558981033-0f0309284409?w=600&q=80",available:true},
+      {name:"Canyon Red",hex:"#9b1b30",image:"https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80",available:true},
+    ]
+  },
+  {
+    id:4, name:"Pulsar 150", category:"Commuter", price:110000,
+    description:"India's favourite sports commuter. Proven performance, bold design, everyday reliability.",
+    engine:"149.5cc, Air Cooled", power:"14 PS @ 8500 rpm", torque:"13.25 Nm @ 6000 rpm",
+    mileage:"50 kmpl", fuelType:"Petrol", weight:"149 kg", topSpeed:"115 km/h",
+    colors:[
+      {name:"Laser Black",hex:"#1a1a2e",image:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80",available:true},
+      {name:"Digital Blue",hex:"#003d8f",image:"https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&q=80",available:true},
+      {name:"Dyno Red",hex:"#c41e3a",image:"https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80",available:true},
+    ]
+  },
+  {
+    id:5, name:"Platina 110", category:"Commuter", price:72000,
+    description:"Maximum comfort, maximum mileage. The most comfortable commuter on Indian roads.",
+    engine:"115cc, Air Cooled", power:"8.6 PS @ 7000 rpm", torque:"9.81 Nm @ 5000 rpm",
+    mileage:"70 kmpl", fuelType:"Petrol", weight:"118 kg", topSpeed:"90 km/h",
+    colors:[
+      {name:"Ebony Black",hex:"#1a1a1a",image:"https://images.unsplash.com/photo-1558981033-0f0309284409?w=600&q=80",available:true},
+      {name:"Cocktail Wine",hex:"#7b1b2e",image:"https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80",available:false},
+    ]
+  },
+  {
+    id:6, name:"KTM Duke 390", category:"Sport", price:318000,
+    description:"Bajaj-KTM partnership pinnacle. Track-bred performance for the street warrior.",
+    engine:"373cc, Liquid Cooled", power:"45 PS @ 9000 rpm", torque:"39 Nm @ 7000 rpm",
+    mileage:"22 kmpl", fuelType:"Petrol", weight:"163 kg", topSpeed:"167 km/h",
+    colors:[
+      {name:"KTM Orange",hex:"#ff6600",image:"https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&q=80",available:true},
+      {name:"Petrol Blue",hex:"#00456e",image:"https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&q=80",available:true},
+      {name:"Ceramic White",hex:"#e0e0e0",image:"https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80",available:false},
+    ]
+  }
+];
+
+let bookings = [
+  {id:1,name:"Rahul Sharma",phone:"9876543210",bikeId:1,color:"Sparkle Black",status:"Confirmed",createdAt:"2025-05-10"},
+  {id:2,name:"Priya Patel",phone:"9123456780",bikeId:3,color:"Ebony Black",status:"Pending",createdAt:"2025-05-12"},
+  {id:3,name:"Amit Kumar",phone:"9012345678",bikeId:2,color:"Vine Black",status:"Delivered",createdAt:"2025-05-08"},
+];
+
+let bikes = JSON.parse(JSON.stringify(BIKES));
+let currentBike = null;
+let currentColor = null;
+let selectedCat = "All";
+let editingBikeId = null;
+let adminAuthed = false;
+
+// ── THEME ─────────────────────────────────────────────────────
+let dark = (() => {
+  try { const s = localStorage.getItem('bajaj-theme'); return s ? s === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches; } catch { return false; }
+})();
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  const icons = ['🌙','☀️'];
+  document.getElementById('themeBtn').textContent = dark ? icons[1] : icons[0];
+  document.getElementById('themeBtnMob').textContent = dark ? icons[1] : icons[0];
+}
+function toggleTheme() {
+  dark = !dark;
+  try { localStorage.setItem('bajaj-theme', dark ? 'dark' : 'light'); } catch {}
+  applyTheme();
+}
+applyTheme();
+
+// ── NAV ───────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => {
+    if (l.textContent.trim().toLowerCase().replace(' ', '') === id.replace('-','').toLowerCase() ||
+        (id==='home'&&l.textContent.trim()==='Home') ||
+        (id==='bikes'&&l.textContent.trim()==='Bikes') ||
+        (id==='emi'&&l.textContent.trim()==='EMI Calculator') ||
+        (id==='admin'&&l.textContent.trim()==='Admin')) l.classList.add('active');
+  });
+  if (id === 'admin' && adminAuthed) renderAdminDash();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('navLinks').classList.toggle('open', menuOpen);
+}
+function closeMenu() { menuOpen = false; document.getElementById('navLinks').classList.remove('open'); }
+
+// Responsive: show mobile theme btn
+(function() {
+  const mq = window.matchMedia('(max-width:768px)');
+  function check(m) { document.getElementById('themeBtnMob').style.display = m.matches ? 'flex' : 'none'; }
+  mq.addEventListener('change', check); check(mq);
+})();
+
+// ── HELPERS ───────────────────────────────────────────────────
+function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function badgeClass(cat) {
+  const m = {Sport:'badge-blue',Touring:'badge-blue',Cruiser:'badge-blue',Commuter:'badge-green'};
+  return m[cat] || 'badge-blue';
+}
+
+// ── BIKE CARD HTML ─────────────────────────────────────────────
+function bikeCardHTML(bike) {
+  const dots = bike.colors.map(c =>
+    `<div class="color-dot${c.available?'':' unavail'}" style="background:${c.hex}" title="${c.name}"></div>`
+  ).join('');
+  return `
+    <div class="bike-card" onclick="openDetail(${bike.id})">
+      <div class="bike-img-wrap">
+        <img src="${bike.colors[0].image}" alt="${bike.name}" loading="lazy"/>
+        <div class="bike-cat-badge"><span class="badge ${badgeClass(bike.category)}">${bike.category}</span></div>
+        <div class="bike-color-dots">${dots}</div>
+      </div>
+      <div class="bike-info">
+        <div class="bike-name">${bike.name}</div>
+        <div class="bike-desc">${bike.description.slice(0,85)}...</div>
+        <div class="bike-meta">
+          <div>
+            <div class="bike-price-lbl">STARTING FROM</div>
+            <div class="bike-price">${(bike.price/100000).toFixed(2)}L</div>
+          </div>
+          <div class="bike-specs-mini">
+            <span class="spec-mini">⛽ ${bike.mileage}</span>
+            <span class="spec-mini">⚡ ${bike.power.split('@')[0].trim()}</span>
+          </div>
+        </div>
+        <button class="btn-view" onclick="event.stopPropagation();openDetail(${bike.id})">View Details →</button>
+      </div>
+    </div>`;
+}
+
+// ── RENDER FEATURED ────────────────────────────────────────────
+function renderFeatured() {
+  document.getElementById('featuredBikes').innerHTML = bikes.slice(0,3).map(bikeCardHTML).join('');
+}
+
+// ── RENDER ALL BIKES ───────────────────────────────────────────
+function renderBikes() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+  let list = bikes.filter(b =>
+    (selectedCat === 'All' || b.category === selectedCat) &&
+    b.name.toLowerCase().includes(search)
+  );
+  if (sort === 'low') list = [...list].sort((a,b)=>a.price-b.price);
+  if (sort === 'high') list = [...list].sort((a,b)=>b.price-a.price);
+  document.getElementById('allBikes').innerHTML = list.length
+    ? list.map(bikeCardHTML).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--text-sec);">No bikes found matching your criteria.</div>`;
+}
+
+// ── CAT TABS ───────────────────────────────────────────────────
+function renderCatTabs() {
+  const cats = ['All','Sport','Touring','Cruiser','Commuter'];
+  document.getElementById('catTabs').innerHTML = cats.map(c =>
+    `<button class="cat-tab${selectedCat===c?' active':''}" onclick="selectCat('${c}')">${c}</button>`
+  ).join('');
+}
+function selectCat(c) { selectedCat = c; renderCatTabs(); renderBikes(); }
+
+// ── DETAIL ────────────────────────────────────────────────────
+function openDetail(id) {
+  currentBike = bikes.find(b => b.id === id);
+  currentColor = currentBike.colors[0];
+  renderDetail();
+  showPage('detail');
+}
+function renderDetail() {
+  const b = currentBike;
+  const c = currentColor;
+  const swatches = b.colors.map(col => `
+    <button class="swatch-btn${col.name===c.name?' active':''}${col.available?'':' unavail'}"
+      onclick="selectColor('${col.name}')" title="${col.name}">
+      <div class="swatch-circle" style="background:${col.hex}"></div>
+      <span class="swatch-name">${col.name}</span>
+    </button>`).join('');
+
+  const specs = [
+    ['🔧 Engine', b.engine], ['⚡ Power', b.power],
+    ['🔄 Torque', b.torque], ['⛽ Mileage', b.mileage],
+    ['🏋️ Weight', b.weight], ['🚀 Top Speed', b.topSpeed]
+  ].map(([k,v]) => `<div class="spec-card"><div class="spec-key">${k}</div><div class="spec-val">${v}</div></div>`).join('');
+
+  document.getElementById('bikeDetail').innerHTML = `
+    <div>
+      <div class="bike-detail-img">
+        <img src="${c.image}" alt="${b.name}" id="detailImg"/>
+        ${!c.available ? `<div class="out-of-stock-overlay"><div class="out-of-stock-label">Out of Stock</div></div>` : ''}
+      </div>
+      <div class="color-picker">
+        <div class="color-picker-label">AVAILABLE COLORS</div>
+        <div class="color-swatches">${swatches}</div>
+        ${!c.available ? `<div class="unavail-msg">⚠️ Sorry, <strong>${c.name}</strong> is currently not available.</div>` : ''}
+      </div>
+    </div>
+    <div>
+      <span class="badge badge-blue" style="margin-bottom:12px;display:inline-block;">${b.category}</span>
+      <h1 style="color:var(--text);font-size:36px;font-weight:900;margin-bottom:8px;letter-spacing:-1px;font-family:'Rajdhani',sans-serif;">${b.name}</h1>
+      <p style="color:var(--text-sec);line-height:1.7;margin-bottom:20px;">${b.description}</p>
+      <div class="price-box">
+        <div class="price-box-lbl">EX-SHOWROOM PRICE</div>
+        <div class="price-big">${fmt(b.price)}</div>
+        <div class="price-note">*Prices may vary by location. Contact showroom for final pricing.</div>
+      </div>
+      <h3 style="color:var(--text);font-weight:700;margin-bottom:12px;">Key Specifications</h3>
+      <div class="specs-grid">${specs}</div>
+      <div class="detail-btns">
+        <button class="btn-book" id="bookBtn" onclick="openBooking()" ${!c.available?'disabled':''}>
+          ${c.available ? '📝 Book Now' : 'Color Unavailable'}
+        </button>
+        <button class="btn-emi" onclick="showPage('emi')">💰 EMI</button>
+      </div>
+    </div>`;
+}
+function selectColor(name) {
+  currentColor = currentBike.colors.find(c => c.name === name);
+  renderDetail();
+}
+
+// ── BOOKING MODAL ──────────────────────────────────────────────
+function openBooking() {
+  document.getElementById('bookModalTitle').textContent = 'Book ' + currentBike.name;
+  document.getElementById('bookModalSub').textContent = 'Color: ' + currentColor.name;
+  document.getElementById('bookSummary').innerHTML =
+    `<strong>${currentBike.name}</strong> · ${currentColor.name}<br>${fmt(currentBike.price)} ex-showroom`;
+  document.getElementById('bookName').value = '';
+  document.getElementById('bookPhone').value = '';
+  document.getElementById('bookingForm').style.display = 'block';
+  document.getElementById('bookingSuccess').style.display = 'none';
+  document.getElementById('bookingModal').style.display = 'flex';
+}
+function closeBookingModal() { document.getElementById('bookingModal').style.display = 'none'; }
+function submitBooking() {
+  const name = document.getElementById('bookName').value.trim();
+  const phone = document.getElementById('bookPhone').value.trim();
+  if (!name || !phone) { alert('Please fill all fields.'); return; }
+  if (!/^\d{10}$/.test(phone)) { alert('Please enter a valid 10-digit phone number.'); return; }
+  bookings.push({
+    id: Date.now(), name, phone,
+    bikeId: currentBike.id, color: currentColor.name,
+    status: 'Pending', createdAt: new Date().toISOString().split('T')[0]
+  });
+  document.getElementById('bookingForm').style.display = 'none';
+  document.getElementById('successMsg').textContent = `We'll contact you on ${phone} shortly. Thank you, ${name}!`;
+  document.getElementById('bookingSuccess').style.display = 'block';
+}
+
+// ── EMI ───────────────────────────────────────────────────────
+function updateEMI() {
+  const price = +document.getElementById('emiPrice').value;
+  const down = Math.min(+document.getElementById('emiDown').value, price);
+  const rate = +document.getElementById('emiRate').value;
+  const tenure = +document.getElementById('emiTenure').value;
+  document.getElementById('emiPriceLbl').textContent = fmt(price);
+  document.getElementById('emiDownLbl').textContent = fmt(down);
+  document.getElementById('emiRateLbl').textContent = rate.toFixed(1) + '% p.a.';
+  document.getElementById('emiTenureLbl').textContent = tenure + ' months';
+  const principal = Math.max(price - down, 0);
+  const mr = rate / 12 / 100;
+  const emi = mr > 0
+    ? (principal * mr * Math.pow(1+mr, tenure)) / (Math.pow(1+mr, tenure) - 1)
+    : principal / tenure;
+  const totalPayable = emi * tenure + down;
+  const totalInterest = totalPayable - price;
+  document.getElementById('emiResult').textContent = fmt(emi);
+  document.getElementById('emiTenureText').textContent = 'for ' + tenure + ' months';
+  document.getElementById('loanAmt').textContent = fmt(principal);
+  document.getElementById('bdDown').textContent = fmt(down);
+  document.getElementById('bdLoan').textContent = fmt(principal);
+  document.getElementById('bdInterest').textContent = fmt(totalInterest);
+  document.getElementById('bdTotal').textContent = fmt(totalPayable);
+  const pPct = Math.round(principal/totalPayable*100);
+  const iPct = Math.round(totalInterest/totalPayable*100);
+  const dPct = Math.round(down/totalPayable*100);
+  document.getElementById('pPct').textContent = pPct + '%';
+  document.getElementById('iPct').textContent = iPct + '%';
+  document.getElementById('dPct').textContent = dPct + '%';
+  document.getElementById('pBar').style.width = pPct + '%';
+  document.getElementById('iBar').style.width = iPct + '%';
+  document.getElementById('dBar').style.width = dPct + '%';
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────
+function adminLogin() {
+  const user = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value;
+  if (user === 'admin' && pass === 'admin123') {
+    adminAuthed = true;
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDash').style.display = 'block';
+    renderAdminDash();
+  } else alert('Incorrect credentials. Use admin / admin123');
+}
+function adminLogout() {
+  adminAuthed = false;
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminDash').style.display = 'none';
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPass').value = '';
+}
+function renderAdminDash() {
+  renderAdminStats();
+  renderBookingsTable();
+  renderAdminBikes();
+  renderInventory();
+}
+function renderAdminStats() {
+  const pending = bookings.filter(b => b.status === 'Pending').length;
+  const confirmed = bookings.filter(b => b.status === 'Confirmed').length;
+  document.getElementById('adminStats').innerHTML = [
+    ['🏍️', bikes.length, 'Total Bikes'],
+    ['📋', bookings.length, 'Total Bookings'],
+    ['⏳', pending, 'Pending'],
+    ['✅', confirmed, 'Confirmed'],
+  ].map(([icon,num,lbl]) => `
+    <div class="stat-card">
+      <div class="icon">${icon}</div>
+      <div class="num">${num}</div>
+      <div class="lbl">${lbl}</div>
+    </div>`).join('');
+}
+function renderBookingsTable() {
+  document.getElementById('bookingsTbody').innerHTML = bookings.map((b,i) => {
+    const bike = bikes.find(bk => bk.id === b.bikeId);
+    const sc = b.status==='Confirmed'||b.status==='Delivered' ? 'badge-green' : b.status==='Pending' ? 'badge-yellow' : 'badge-blue';
+    return `<tr>
+      <td style="color:var(--text-ter);">${i+1}</td>
+      <td style="font-weight:600;">${b.name}</td>
+      <td style="color:var(--text-sec);">${b.phone}</td>
+      <td>${bike ? bike.name : 'Unknown'}</td>
+      <td style="color:var(--text-sec);">${b.color}</td>
+      <td style="color:var(--text-sec);font-size:12px;">${b.createdAt}</td>
+      <td><span class="badge ${sc}">${b.status}</span></td>
+      <td>
+        <select class="status-select" onchange="updateBookingStatus(${b.id}, this.value)">
+          <option${b.status==='Pending'?' selected':''}>Pending</option>
+          <option${b.status==='Confirmed'?' selected':''}>Confirmed</option>
+          <option${b.status==='Delivered'?' selected':''}>Delivered</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function updateBookingStatus(id, status) {
+  bookings = bookings.map(b => b.id === id ? {...b, status} : b);
+  renderAdminStats();
+}
+function renderAdminBikes() {
+  document.getElementById('adminBikesGrid').innerHTML = bikes.map(bike => `
+    <div class="admin-bike-card">
+      <img src="${bike.colors[0].image}" alt="${bike.name}" loading="lazy"/>
+      <div class="admin-bike-info">
+        <div class="admin-bike-name">${bike.name}</div>
+        <div class="admin-bike-price">${fmt(bike.price)} &nbsp;<span class="badge ${badgeClass(bike.category)}">${bike.category}</span></div>
+        <div class="admin-bike-actions">
+          <button class="btn-edit" onclick="openEditModal(${bike.id})">✏️ Edit</button>
+          <button class="btn-delete" onclick="deleteBike(${bike.id})">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function deleteBike(id) {
+  if (confirm('Delete this bike?')) {
+    bikes = bikes.filter(b => b.id !== id);
+    renderAdminBikes();
+    renderAdminStats();
+    renderFeatured();
+    renderBikes();
+  }
+}
+function renderInventory() {
+  document.getElementById('inventoryContent').innerHTML = bikes.map(bike => `
+    <div class="inventory-bike">
+      <h4>${bike.name}</h4>
+      <div class="inventory-colors">
+        ${bike.colors.map((c,ci) => `
+          <div class="inv-color">
+            <div class="inv-swatch" style="background:${c.hex}"></div>
+            <span class="inv-name">${c.name}</span>
+            <button class="btn-toggle-stock ${c.available?'in':'out'}"
+              onclick="toggleStock(${bike.id},${ci})">
+              ${c.available ? '✓ In Stock' : '✗ Out'}
+            </button>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleStock(bikeId, colorIdx) {
+  const bike = bikes.find(b => b.id === bikeId);
+  bike.colors[colorIdx].available = !bike.colors[colorIdx].available;
+  renderInventory();
+  renderAdminBikes();
+}
+
+// ── EDIT MODAL ────────────────────────────────────────────────
+function openEditModal(id) {
+  editingBikeId = id;
+  const bike = bikes.find(b => b.id === id);
+  document.getElementById('editModalTitle').textContent = 'Edit ' + bike.name;
+  document.getElementById('editName').value = bike.name;
+  document.getElementById('editPrice').value = bike.price;
+  document.getElementById('editCategory').value = bike.category;
+  document.getElementById('editDesc').value = bike.description;
+  document.getElementById('editBikeModal').style.display = 'flex';
+}
+function closeEditModal() { document.getElementById('editBikeModal').style.display = 'none'; }
+function saveEdit() {
+  const bike = bikes.find(b => b.id === editingBikeId);
+  bike.name = document.getElementById('editName').value;
+  bike.price = Number(document.getElementById('editPrice').value);
+  bike.category = document.getElementById('editCategory').value;
+  bike.description = document.getElementById('editDesc').value;
+  closeEditModal();
+  renderAdminBikes();
+  renderFeatured();
+  renderBikes();
+}
+
+// ── ADD BIKE MODAL ─────────────────────────────────────────────
+function openAddBikeModal() {
+  ['addName','addPrice','addDesc','addEngine','addPower','addMileage'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('addBikeModal').style.display = 'flex';
+}
+function closeAddModal() { document.getElementById('addBikeModal').style.display = 'none'; }
+function addNewBike() {
+  const name = document.getElementById('addName').value.trim();
+  const price = Number(document.getElementById('addPrice').value);
+  if (!name || !price) { alert('Please fill at least the bike name and price.'); return; }
+  const newBike = {
+    id: Date.now(),
+    name, price,
+    category: document.getElementById('addCategory').value,
+    description: document.getElementById('addDesc').value || 'A powerful Bajaj motorcycle.',
+    engine: document.getElementById('addEngine').value || 'N/A',
+    power: document.getElementById('addPower').value || 'N/A',
+    torque: 'N/A', mileage: document.getElementById('addMileage').value || 'N/A',
+    fuelType: 'Petrol', weight: 'N/A', topSpeed: 'N/A',
+    colors: [
+      {name:'Standard Black',hex:'#1a1a1a',image:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80',available:true}
+    ]
+  };
+  bikes.push(newBike);
+  closeAddModal();
+  renderAdminBikes();
+  renderAdminStats();
+  renderFeatured();
+  renderBikes();
+}
+
+// ── ADMIN TAB SWITCH ───────────────────────────────────────────
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+renderFeatured();
+renderCatTabs();
+renderBikes();
+updateEMI();
+</script>
+</body>
+</html>
